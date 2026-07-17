@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/Open-LLM-VTuber/Open-LLM-VTuber.git",
+  "commit": "992309c0aa19845960228f880013d4685fde93b5",
+  "commit_date": "2026-05-15T00:18:03-07:00",
+  "declared_version": "1.2.1",
+  "license": "MIT excluding separately licensed Live2D sample models",
+  "relationship": "read-only research reference",
+  "runtime_dependency": false
+}
