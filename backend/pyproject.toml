@@ -1,0 +1,9 @@
+[project]
+name = "captain-culinary-pro-hub-spike"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["."]
+testpaths = ["tests"]
