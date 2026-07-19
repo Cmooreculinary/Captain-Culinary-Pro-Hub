@@ -42,6 +42,8 @@ class Settings:
     cors_origins: tuple[str, ...]
     ollama_base_url: str
     ollama_model: str
+    ollama_context_tokens: int
+    ollama_think: bool
     ollama_timeout_seconds: float
     max_camera_frame_bytes: int
     ws_allow_missing_origin: bool
@@ -57,6 +59,10 @@ class Settings:
         if timeout <= 0:
             raise ValueError("OLLAMA_TIMEOUT_SECONDS must be greater than zero")
 
+        context_tokens = int(os.getenv("OLLAMA_CONTEXT_TOKENS", "4096"))
+        if context_tokens < 1024 or context_tokens > 32768:
+            raise ValueError("OLLAMA_CONTEXT_TOKENS must be between 1024 and 32768")
+
         max_frame = int(os.getenv("MAX_CAMERA_FRAME_BYTES", "2097152"))
         if max_frame < 1024 or max_frame > 10 * 1024 * 1024:
             raise ValueError("MAX_CAMERA_FRAME_BYTES must be between 1024 and 10485760")
@@ -64,7 +70,9 @@ class Settings:
         return cls(
             cors_origins=_parse_origins(os.getenv("CORS_ORIGINS", "http://localhost:5173")),
             ollama_base_url=base_url,
-            ollama_model=os.getenv("OLLAMA_MODEL", "").strip(),
+            ollama_model=os.getenv("OLLAMA_MODEL", "qwen3:1.7b").strip(),
+            ollama_context_tokens=context_tokens,
+            ollama_think=_parse_bool(os.getenv("OLLAMA_THINK", "false")),
             ollama_timeout_seconds=timeout,
             max_camera_frame_bytes=max_frame,
             ws_allow_missing_origin=_parse_bool(os.getenv("WS_ALLOW_MISSING_ORIGIN", "false")),

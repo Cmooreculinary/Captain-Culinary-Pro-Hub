@@ -22,9 +22,17 @@ scripts/    Reproducible upstream-reference attachment
 
 ## Run locally
 
-Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and a running Ollama installation with a locally available model.
+Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and Ollama. Current Ollama for macOS requires Sonoma 14 or newer; Intel Macs run CPU-only.
 
-1. Create the backend environment.
+1. Download and verify the selected Continuity Mode model.
+
+   ```bash
+   ./scripts/install_continuity_model.sh
+   ```
+
+   The selected model is `qwen3:1.7b` (1.4 GB, Q4_K_M). The backend caps it at 4,096 context tokens and disables extended thinking to protect memory and response time on the 8 GB Intel continuity target.
+
+2. Create the backend environment.
 
    ```bash
    cd backend
@@ -34,9 +42,9 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and a running Ollama ins
    cp .env.example .env
    ```
 
-2. Set `OLLAMA_MODEL` in `backend/.env` to the exact local model name returned by `ollama list`.
+3. Keep `OLLAMA_MODEL=qwen3:1.7b` in `backend/.env`. Change it only after a documented hardware and quality evaluation.
 
-3. Start the backend.
+4. Start the backend.
 
    ```bash
    set -a
@@ -45,7 +53,7 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and a running Ollama ins
    uvicorn app.main:app --host 127.0.0.1 --port 8000
    ```
 
-4. Start the frontend in a second terminal.
+5. Start the frontend in a second terminal.
 
    ```bash
    cd frontend
@@ -54,7 +62,7 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and a running Ollama ins
    npm run dev
    ```
 
-5. Open `http://localhost:5173`, choose **Connect**, then choose **Start the egg test**.
+6. Open `http://localhost:5173`, choose **Connect**, then choose **Start the egg test**.
 
 ## Verify
 
@@ -75,3 +83,5 @@ This evaluation has no authentication, tenant isolation, persistent memory, prog
 Open-LLM-VTuber is pinned as a read-only research reference at commit `992309c0aa19845960228f880013d4685fde93b5`. Run `scripts/attach_upstream_reference.sh` from this repository to add and verify the local Git remote without checking out third-party source or character assets.
 
 See `research/open-llm-vtuber-evaluation/UPSTREAM.md` for the exact boundary and license record.
+
+The model decision and hardware limits are recorded in `research/ollama-continuity-model.md`.
