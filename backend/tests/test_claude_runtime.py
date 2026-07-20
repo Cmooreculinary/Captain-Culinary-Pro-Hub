@@ -113,7 +113,10 @@ async def test_interruption_closes_the_stream():
 
 @pytest.mark.anyio
 async def test_unconfigured_without_api_key():
-    runtime = ClaudeAgentRuntime(settings(anthropic_api_key=""))
+    runtime = ClaudeAgentRuntime(
+        settings(anthropic_api_key=""),
+        client=FakeClaudeClient(FakeMessageStream(["must not stream"])),
+    )
 
     assert runtime.configured is False
     with pytest.raises(AgentRuntimeError, match="ANTHROPIC_API_KEY"):
@@ -175,12 +178,15 @@ async def test_close_closes_the_client():
 
 
 def test_provider_switch_selects_the_right_runtime():
-    claude = create_agent_runtime(settings(agent_provider="claude"))
+    claude = create_agent_runtime(
+        settings(agent_provider="claude", anthropic_api_key="")
+    )
     ollama = create_agent_runtime(settings(agent_provider="ollama"))
 
     assert isinstance(claude, ClaudeAgentRuntime)
     assert claude.provider == "claude"
     assert claude.model == "claude-fable-5"
+    assert claude.configured is False
     assert isinstance(ollama, OllamaAgentRuntime)
     assert ollama.provider == "ollama"
     assert ollama.model == "test-model"
