@@ -13,6 +13,8 @@ from app.main import create_app
 
 
 class FakeAgent:
+    provider = "fake"
+    model = "fake-model"
     configured = True
 
     async def stream_reply(self, messages: Sequence[ChatMessage]) -> AsyncIterator[str]:
@@ -41,7 +43,10 @@ def test_health_and_streaming_exchange() -> None:
     with TestClient(app) as client:
         health = client.get("/health")
         assert health.status_code == 200
-        assert health.json()["ollama_configured"] is True
+        payload = health.json()
+        assert payload["agent_configured"] is True
+        assert payload["provider"] == "fake"
+        assert payload["model"] == "fake-model"
 
         with client.websocket_connect(
             "/ws/coach/test-session",

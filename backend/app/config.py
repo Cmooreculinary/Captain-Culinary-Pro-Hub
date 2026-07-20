@@ -37,6 +37,9 @@ def _parse_bool(raw: str) -> bool:
     raise ValueError(f"Invalid boolean value: {raw}")
 
 
+SUPPORTED_AGENT_PROVIDERS = ("claude", "ollama")
+
+
 @dataclass(frozen=True, slots=True)
 class Settings:
     cors_origins: tuple[str, ...]
@@ -45,9 +48,18 @@ class Settings:
     ollama_timeout_seconds: float
     max_camera_frame_bytes: int
     ws_allow_missing_origin: bool
+    agent_provider: str = "claude"
+    anthropic_api_key: str = ""
+    claude_model: str = "claude-fable-5"
 
     @classmethod
     def from_env(cls) -> "Settings":
+        agent_provider = os.getenv("AGENT_PROVIDER", "claude").strip().lower()
+        if agent_provider not in SUPPORTED_AGENT_PROVIDERS:
+            raise ValueError(
+                "AGENT_PROVIDER must be one of: " + ", ".join(SUPPORTED_AGENT_PROVIDERS)
+            )
+
         base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
         parsed = urlparse(base_url)
         if parsed.scheme not in {"http", "https"} or not parsed.netloc:
@@ -68,6 +80,9 @@ class Settings:
             ollama_timeout_seconds=timeout,
             max_camera_frame_bytes=max_frame,
             ws_allow_missing_origin=_parse_bool(os.getenv("WS_ALLOW_MISSING_ORIGIN", "false")),
+            agent_provider=agent_provider,
+            anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", "").strip(),
+            claude_model=os.getenv("CLAUDE_MODEL", "").strip() or "claude-fable-5",
         )
 
     def origin_is_allowed(self, origin: str | None) -> bool:

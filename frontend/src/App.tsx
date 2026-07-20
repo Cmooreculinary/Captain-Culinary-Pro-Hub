@@ -6,7 +6,9 @@ type ServerEvent = {
   type?: string;
   text?: string;
   message?: string;
-  ollama_configured?: boolean;
+  agent_configured?: boolean;
+  provider?: string;
+  model?: string;
 };
 
 const endpoint = import.meta.env.VITE_COACH_WS_URL || "ws://localhost:8000/ws/coach";
@@ -18,7 +20,7 @@ function App() {
   const [streamingText, setStreamingText] = useState("");
   const [cameraActive, setCameraActive] = useState(false);
   const [speakReplies, setSpeakReplies] = useState(false);
-  const [runtimeNote, setRuntimeNote] = useState("Connect to check the local Ollama runtime.");
+  const [runtimeNote, setRuntimeNote] = useState("Connect to check the coaching runtime.");
   const socketRef = useRef<WebSocket | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const cameraStreamRef = useRef<MediaStream | null>(null);
@@ -63,9 +65,11 @@ function App() {
       if (event.type === "ready") {
         setConnection("ready");
         setRuntimeNote(
-          event.ollama_configured
-            ? "Local Ollama model configured."
-            : "Backend connected; OLLAMA_MODEL still needs an exact local model name.",
+          event.agent_configured
+            ? `Coach online: ${event.provider ?? "unknown"} / ${event.model ?? "model unset"}.`
+            : event.provider === "ollama"
+              ? "Backend connected; OLLAMA_MODEL still needs an exact local model name."
+              : "Backend connected; ANTHROPIC_API_KEY still needs to be set in backend/.env.",
         );
       } else if (event.type === "assistant-start") {
         setStreamingText("");

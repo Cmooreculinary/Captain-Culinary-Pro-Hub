@@ -10,7 +10,7 @@ from typing import Any
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, status
 from fastapi.middleware.cors import CORSMiddleware
 
-from .agent import AgentRuntimeError, OllamaAgentRuntime
+from .agent import AgentRuntimeError, create_agent_runtime
 from .config import Settings
 from .contracts import AgentRuntimeAdapter
 from .session import CameraFrameMetadata, CoachSession
@@ -52,7 +52,7 @@ def create_app(
     agent_runtime: AgentRuntimeAdapter | None = None,
 ) -> FastAPI:
     resolved_settings = settings or Settings.from_env()
-    runtime = agent_runtime or OllamaAgentRuntime(resolved_settings)
+    runtime = agent_runtime or create_agent_runtime(resolved_settings)
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
@@ -85,7 +85,9 @@ def create_app(
     async def health() -> dict[str, Any]:
         return {
             "status": "ok",
-            "ollama_configured": runtime.configured,
+            "provider": runtime.provider,
+            "model": runtime.model,
+            "agent_configured": runtime.configured,
             "camera_retention": "none",
             "avatar_renderer": "disabled-pending-licensed-asset",
         }
@@ -142,7 +144,9 @@ def create_app(
             {
                 "type": "ready",
                 "session_id": session_id,
-                "ollama_configured": runtime.configured,
+                "provider": runtime.provider,
+                "model": runtime.model,
+                "agent_configured": runtime.configured,
                 "camera_reasoning": False,
             }
         )
