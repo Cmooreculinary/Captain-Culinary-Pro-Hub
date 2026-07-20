@@ -35,7 +35,7 @@ class ClaudeAgentRuntime:
 
     @property
     def configured(self) -> bool:
-        return self._client is not None
+        return bool(self._settings.anthropic_api_key)
 
     async def stream_reply(self, messages: Sequence[ChatMessage]) -> AsyncIterator[str]:
         if not self.configured:
