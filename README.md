@@ -1,38 +1,63 @@
-# Captain Culinary Pro Hub
+# Captain Culinary Core
 
-Captain Culinary Pro Hub is the BCA-owned application surface for a live chef avatar, private-chef support, and professional instruction.
+Captain Culinary Core is the BCA-owned shared engine that powers two products:
 
-This first controlled spike validates four interaction patterns informed by Open-LLM-VTuber without importing its application, frontend, memory model, or character assets:
+- **Captain Culinary Kids** — guided cooking confidence for young chefs.
+- **Captain Culinary Pro Hub** — a live chef avatar, private-chef support, and professional instruction.
 
-- streamed local Ollama conversation;
-- immediate interruption while a response is streaming;
-- camera-frame transport without retention;
-- a provider-neutral agent boundary owned by BCA.
+Cap — the coach — runs on a provider-neutral brain. The engine validates four
+interaction patterns: streamed conversation, immediate mid-sentence
+interruption, camera-frame transport without retention, and a provider-neutral
+agent boundary owned by BCA.
 
-The spike is not the production Live Avatar Agent Engine. Architecture, avatar licensing, persistent memory, tool permissions, and Continuity Mode synchronization remain governed through Conrad/EXPO.
+## Switching Cap's brain (one line)
+
+The model provider is chosen by a single line in `backend/.env`:
+
+```bash
+AGENT_PROVIDER=claude   # Claude Fable 5 via the Anthropic API (default)
+AGENT_PROVIDER=ollama   # fully offline local fallback
+```
+
+With `claude`, set `ANTHROPIC_API_KEY` in `backend/.env` and optionally
+`CLAUDE_MODEL` (default `claude-fable-5`). With `ollama`, set `OLLAMA_MODEL`
+to an exact local model name from `ollama list`. `GET /health` reports the
+active provider and model. Both providers implement the same
+`AgentRuntimeAdapter` protocol (`backend/app/contracts.py`), so the coaching
+loop never knows or cares which brain is plugged in.
+
+## Safety boundary — unchanged
+
+The safety invariants are identical no matter which provider runs:
+
+- Coaching gives one action at a time and waits for confirmation.
+- Cap never claims food is safe, allergen-free, or fully cooked from a camera frame.
+- Camera frames are metadata only, never written to disk; size and
+  file-signature checks are enforced.
+- No wildcard CORS; explicit origins only. No secrets in code, commits, or
+  logs — API keys live only in untracked `.env` files.
+
+See `CLAUDE.md` for the full working agreement that governs AI-assisted
+sessions in this repository.
 
 ## Repository layout
 
 ```text
-backend/    FastAPI and WebSocket coaching runtime
-frontend/   React and Vite Trench Design control surface
+backend/    FastAPI and WebSocket coaching runtime (Claude + Ollama runtimes)
+frontend/   React and Vite control surface
 research/   Pinned upstream evaluation record
 scripts/    Reproducible upstream-reference attachment
+.claude/    Project skills (cap-voice: Cap's coaching voice rules)
 ```
 
-## Run locally
+## LOCAL EGG TEST
 
-Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and Ollama. Current Ollama for macOS requires Sonoma 14 or newer; Intel Macs run CPU-only.
+Exact copy-paste steps to run Cap on your own machine with Claude Fable 5.
+Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
+Start in the Captain Culinary Core repository root—the folder containing this
+README.
 
-1. Download and verify the selected Continuity Mode model.
-
-   ```bash
-   ./scripts/install_continuity_model.sh
-   ```
-
-   The selected model is `qwen3:1.7b` (1.4 GB, Q4_K_M). The backend caps it at 4,096 context tokens and disables extended thinking to protect memory and response time on the 8 GB Intel continuity target.
-
-2. Create the backend environment.
+1. Set up the backend (first time only):
 
    ```bash
    cd backend
@@ -42,18 +67,28 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and Ollama. Current Olla
    cp .env.example .env
    ```
 
-3. Keep `OLLAMA_MODEL=qwen3:1.7b` in `backend/.env`. Change it only after a documented hardware and quality evaluation.
-
-4. Start the backend.
+2. Open `backend/.env` in any text editor. Find this blank line, place the
+   cursor immediately after the `=`, and paste your Anthropic API key. Do not
+   add quotes or spaces.
 
    ```bash
+   ANTHROPIC_API_KEY=
+   ```
+
+   Leave `AGENT_PROVIDER=claude` and `CLAUDE_MODEL=claude-fable-5` as they are.
+
+3. Start the backend:
+
+   ```bash
+   source .venv/bin/activate
    set -a
    source .env
    set +a
    uvicorn app.main:app --host 127.0.0.1 --port 8000
    ```
 
-5. Start the frontend in a second terminal.
+4. Open a second terminal at the Captain Culinary Core repository root, then
+   start the frontend:
 
    ```bash
    cd frontend
@@ -62,26 +97,71 @@ Requirements: Python 3.11+, Node.js 20.19+ (or 22.12+), and Ollama. Current Olla
    npm run dev
    ```
 
-6. Open `http://localhost:5173`, choose **Connect**, then choose **Start the egg test**.
+5. Open `http://localhost:5173`. The status note should read
+   **"Coach online: claude / claude-fable-5."**
+
+6. Click **CONNECT LOCAL COACH**, then **START THE EGG TEST**. Cap should ask
+   you to confirm the station is safe — one step at a time.
+
+7. **Prove interruption works:** while Cap is mid-sentence, click
+   **STOP RESPONSE**. The text should stop instantly and the transcript should
+   show "Response stopped." Then keep cooking.
+
+To run fully offline instead, set `AGENT_PROVIDER=ollama` and `OLLAMA_MODEL`
+in `backend/.env` and restart the backend.
+
+### Offline Continuity Mode
+
+Ollama is the fully offline fallback. Current Ollama for macOS requires Sonoma
+14 or newer; Intel Macs run CPU-only.
+
+1. From the repository root, download and verify the selected model:
+
+   ```bash
+   ./scripts/install_continuity_model.sh
+   ```
+
+2. In `backend/.env`, set `AGENT_PROVIDER=ollama` and keep
+   `OLLAMA_MODEL=qwen3:1.7b`.
+
+The selected model is Qwen3 1.7B (1.4 GB, Q4_K_M). The backend caps it at
+4,096 context tokens and disables extended thinking to protect memory and
+response time on the 8 GB Intel continuity target. Restart the backend after
+changing providers.
 
 ## Verify
 
 ```bash
 cd backend
-pytest
+pytest          # all Claude API tests use mocks — no API key required
 
 cd ../frontend
 npm run build
 ```
 
+## Future deliverables note
+
+The `document-skills@anthropic-agent-skills` plugin (PDF/XLSX/PPTX/DOCX
+generation for the future Recipe Vault and training deliverables) was not
+available in the cloud sandbox's plugin catalog. Install it locally later
+with: `/plugin install document-skills@anthropic-agent-skills`.
+
 ## Safety and data boundary
 
-This evaluation has no authentication, tenant isolation, persistent memory, progress records, tool execution, or safety certification. It binds to localhost in the documented command. Camera frames are held only as per-session metadata and are never written to disk. Do not expose this spike publicly or use it for CapKids, allergen decisions, or production culinary-safety guidance.
+This engine has no authentication, tenant isolation, persistent memory,
+progress records, tool execution, or safety certification. It binds to
+localhost in the documented commands. Camera frames are held only as
+per-session metadata and are never written to disk. Do not expose it publicly
+or use it for allergen decisions or production culinary-safety guidance.
 
 ## Upstream relationship
 
-Open-LLM-VTuber is pinned as a read-only research reference at commit `992309c0aa19845960228f880013d4685fde93b5`. Run `scripts/attach_upstream_reference.sh` from this repository to add and verify the local Git remote without checking out third-party source or character assets.
+Open-LLM-VTuber is pinned as a read-only research reference at commit
+`992309c0aa19845960228f880013d4685fde93b5`. Run
+`scripts/attach_upstream_reference.sh` to add and verify the local Git remote
+without checking out third-party source or character assets.
 
-See `research/open-llm-vtuber-evaluation/UPSTREAM.md` for the exact boundary and license record.
+See `research/open-llm-vtuber-evaluation/UPSTREAM.md` for the exact boundary
+and license record.
 
 The model decision and hardware limits are recorded in `research/ollama-continuity-model.md`.
