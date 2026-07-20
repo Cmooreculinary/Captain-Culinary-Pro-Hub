@@ -54,6 +54,8 @@ scripts/    Reproducible upstream-reference attachment
 
 Exact copy-paste steps to run Cap on your own machine with Claude Fable 5.
 Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
+Start in the Captain Culinary Core repository root—the folder containing this
+README.
 
 1. Set up the backend (first time only):
 
@@ -65,11 +67,12 @@ Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
    cp .env.example .env
    ```
 
-2. Open `backend/.env` in any text editor and paste your key on this line
-   (no quotes, no spaces):
+2. Open `backend/.env` in any text editor. Find this blank line, place the
+   cursor immediately after the `=`, and paste your Anthropic API key. Do not
+   add quotes or spaces.
 
    ```bash
-   ANTHROPIC_API_KEY=sk-ant-your-key-here
+   ANTHROPIC_API_KEY=
    ```
 
    Leave `AGENT_PROVIDER=claude` and `CLAUDE_MODEL=claude-fable-5` as they are.
@@ -77,7 +80,6 @@ Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
 3. Start the backend:
 
    ```bash
-   cd backend
    source .venv/bin/activate
    set -a
    source .env
@@ -85,7 +87,8 @@ Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
    uvicorn app.main:app --host 127.0.0.1 --port 8000
    ```
 
-4. In a second terminal, start the frontend:
+4. Open a second terminal at the Captain Culinary Core repository root, then
+   start the frontend:
 
    ```bash
    cd frontend
