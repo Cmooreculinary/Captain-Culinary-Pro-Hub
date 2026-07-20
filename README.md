@@ -110,6 +110,25 @@ README.
 To run fully offline instead, set `AGENT_PROVIDER=ollama` and `OLLAMA_MODEL`
 in `backend/.env` and restart the backend.
 
+### Offline Continuity Mode
+
+Ollama is the fully offline fallback. Current Ollama for macOS requires Sonoma
+14 or newer; Intel Macs run CPU-only.
+
+1. From the repository root, download and verify the selected model:
+
+   ```bash
+   ./scripts/install_continuity_model.sh
+   ```
+
+2. In `backend/.env`, set `AGENT_PROVIDER=ollama` and keep
+   `OLLAMA_MODEL=qwen3:1.7b`.
+
+The selected model is Qwen3 1.7B (1.4 GB, Q4_K_M). The backend caps it at
+4,096 context tokens and disables extended thinking to protect memory and
+response time on the 8 GB Intel continuity target. Restart the backend after
+changing providers.
+
 ## Verify
 
 ```bash
@@ -144,3 +163,5 @@ without checking out third-party source or character assets.
 
 See `research/open-llm-vtuber-evaluation/UPSTREAM.md` for the exact boundary
 and license record.
+
+The model decision and hardware limits are recorded in `research/ollama-continuity-model.md`.

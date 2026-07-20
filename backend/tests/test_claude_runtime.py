@@ -20,6 +20,8 @@ def settings(**overrides) -> Settings:
         cors_origins=("http://localhost:5173",),
         ollama_base_url="http://127.0.0.1:11434",
         ollama_model="test-model",
+        ollama_context_tokens=4096,
+        ollama_think=False,
         ollama_timeout_seconds=5,
         max_camera_frame_bytes=2048,
         ws_allow_missing_origin=False,

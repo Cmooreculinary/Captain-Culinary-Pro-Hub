@@ -104,6 +104,8 @@ class OllamaAgentRuntime:
         payload = {
             "model": self._settings.ollama_model,
             "stream": True,
+            "think": self._settings.ollama_think,
+            "options": {"num_ctx": self._settings.ollama_context_tokens},
             "messages": [
                 {"role": "system", "content": PROTOTYPE_SYSTEM_PROMPT},
                 *messages,
