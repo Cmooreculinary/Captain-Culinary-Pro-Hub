@@ -85,6 +85,36 @@ def test_camera_transport_reports_no_retention_or_reasoning() -> None:
             assert reply["vision_reasoning"] is False
 
 
+def test_websocket_guards_reject_bad_input() -> None:
+    app = create_app(settings(), FakeAgent())
+    with TestClient(app) as client:
+        with client.websocket_connect(
+            "/ws/coach/guard-test",
+            headers={"origin": "http://localhost:5173"},
+        ) as websocket:
+            assert websocket.receive_json()["type"] == "ready"
+
+            websocket.send_json({"type": "heartbeat"})
+            assert websocket.receive_json()["type"] == "heartbeat-ack"
+
+            websocket.send_json({"type": "interrupt-signal"})
+            ack = websocket.receive_json()
+            assert ack["type"] == "interruption-ack"
+            assert ack["interrupted"] is False
+
+            websocket.send_json({"type": "camera-frame", "data_url": "data:image/png;base64,!!"})
+            assert websocket.receive_json()["code"] == "invalid-camera-frame"
+
+            websocket.send_json({"type": "text-input", "text": "   "})
+            assert websocket.receive_json()["code"] == "empty-input"
+
+            websocket.send_json({"type": "text-input", "text": "x" * 4001})
+            assert websocket.receive_json()["code"] == "input-too-long"
+
+            websocket.send_json({"type": "mystery-event"})
+            assert websocket.receive_json()["code"] == "unknown-event"
+
+
 def test_unapproved_websocket_origin_is_rejected() -> None:
     app = create_app(settings(), FakeAgent())
     with TestClient(app) as client:
