@@ -139,6 +139,12 @@ cd ../frontend
 npm run build
 ```
 
+The backend run enforces a minimum of **85% coverage** and includes the
+permanent safety-invariant suite (`backend/tests/test_safety_invariants.py`),
+which pins the non-negotiable rules from `CLAUDE.md`. GitHub Actions runs the
+backend tests, the frontend build, and weekly dependency audits on every push
+and pull request.
+
 ## Future deliverables note
 
 The `document-skills@anthropic-agent-skills` plugin (PDF/XLSX/PPTX/DOCX
