@@ -63,6 +63,10 @@ The Command Center is additive. Captain Culinary Kids, Captain Culinary Pro
 Hub, and Core remain separate products and keep ownership of their
 product-specific consent, curriculum, progress, session-limit, and tool rules.
 
+The shared SDK also defines provider-neutral speech-input and speech-output
+adapter contracts. The manifest continues to report both as disabled until
+real adapters are configured and tested; no speech provider is hard-wired.
+
 ## LOCAL EGG TEST
 
 Exact copy-paste steps to run Cap on your own machine with Claude Fable 5.
