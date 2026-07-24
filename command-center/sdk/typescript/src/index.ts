@@ -28,6 +28,53 @@ export interface CommandManifest {
     model: string;
     configured: boolean;
   };
+  adapters: {
+    speech_input: CommandAdapterStatus;
+    speech_output: CommandAdapterStatus;
+  };
+}
+
+export interface CommandAdapterStatus {
+  configured: boolean;
+  provider: string | null;
+  model: string | null;
+  mime_types: string[];
+}
+
+export interface AudioChunk {
+  data: ArrayBuffer;
+  mimeType: string;
+  sequence: number;
+}
+
+export interface TranscriptEvent {
+  text: string;
+  final: boolean;
+}
+
+export interface SpeechInputAdapter {
+  readonly provider: string;
+  readonly model: string;
+  readonly configured: boolean;
+  readonly acceptedMimeTypes: readonly string[];
+  start(onTranscript: (event: TranscriptEvent) => void): Promise<void>;
+  stop(): Promise<void>;
+  close(): Promise<void>;
+}
+
+export interface SpeechOutputAdapter {
+  readonly provider: string;
+  readonly model: string;
+  readonly configured: boolean;
+  readonly outputMimeType: string;
+  speak(text: string): Promise<void>;
+  interrupt(): Promise<void>;
+  close(): Promise<void>;
+}
+
+export interface LiveAudioAdapters {
+  input: SpeechInputAdapter;
+  output: SpeechOutputAdapter;
 }
 
 export type CommandServerEvent =
