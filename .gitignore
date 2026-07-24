@@ -9,4 +9,6 @@ backend/.coverage
 frontend/node_modules/
 frontend/dist/
 frontend/.env.local
+command-center/sdk/typescript/node_modules/
+command-center/sdk/typescript/dist/
 *.tsbuildinfo
