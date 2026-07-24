@@ -4,10 +4,11 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
+from .audio import SpeechInputAdapter, SpeechOutputAdapter
 from .contracts import AgentRuntimeAdapter
 
 
-COMMAND_PROTOCOL_VERSION = "1.0.0"
+COMMAND_PROTOCOL_VERSION = "1.1.0"
 
 
 class StrictModel(BaseModel):
@@ -45,6 +46,18 @@ class CommandRuntime(StrictModel):
     configured: bool
 
 
+class CommandAdapterStatus(StrictModel):
+    configured: bool
+    provider: str | None
+    model: str | None
+    mime_types: tuple[str, ...]
+
+
+class CommandAdapters(StrictModel):
+    speech_input: CommandAdapterStatus
+    speech_output: CommandAdapterStatus
+
+
 class CommandManifest(StrictModel):
     service: Literal["captain-culinary-command"]
     protocol_version: str
@@ -52,9 +65,14 @@ class CommandManifest(StrictModel):
     capabilities: CommandCapabilities
     safety: CommandSafetyBoundary
     runtime: CommandRuntime
+    adapters: CommandAdapters
 
 
-def build_command_manifest(runtime: AgentRuntimeAdapter) -> CommandManifest:
+def build_command_manifest(
+    runtime: AgentRuntimeAdapter,
+    speech_input: SpeechInputAdapter | None = None,
+    speech_output: SpeechOutputAdapter | None = None,
+) -> CommandManifest:
     """Describe the shared command surface without overstating unfinished adapters."""
     return CommandManifest(
         service="captain-culinary-command",
@@ -69,8 +87,8 @@ def build_command_manifest(runtime: AgentRuntimeAdapter) -> CommandManifest:
             camera_transport=True,
             camera_retention="none",
             vision_reasoning=False,
-            audio_input=False,
-            audio_output=False,
+            audio_input=bool(speech_input and speech_input.configured),
+            audio_output=bool(speech_output and speech_output.configured),
             avatar_renderer=False,
             automatic_runtime_handoff=False,
         ),
@@ -85,5 +103,19 @@ def build_command_manifest(runtime: AgentRuntimeAdapter) -> CommandManifest:
             provider=runtime.provider,
             model=runtime.model,
             configured=runtime.configured,
+        ),
+        adapters=CommandAdapters(
+            speech_input=CommandAdapterStatus(
+                configured=bool(speech_input and speech_input.configured),
+                provider=speech_input.provider if speech_input else None,
+                model=speech_input.model if speech_input else None,
+                mime_types=speech_input.accepted_mime_types if speech_input else (),
+            ),
+            speech_output=CommandAdapterStatus(
+                configured=bool(speech_output and speech_output.configured),
+                provider=speech_output.provider if speech_output else None,
+                model=speech_output.model if speech_output else None,
+                mime_types=(speech_output.output_mime_type,) if speech_output else (),
+            ),
         ),
     )
