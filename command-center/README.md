@@ -15,6 +15,12 @@ Culinary application can inspect before opening a live session:
 - `sdk/typescript` provides the shared browser client used by Captain Culinary
   application interfaces.
 
+Version 1.1 adds provider-neutral `SpeechInputAdapter` and
+`SpeechOutputAdapter` contracts. Applications can use the same microphone,
+transcript, speech, and interruption interface while the underlying provider
+remains replaceable. No provider implementation or credential is embedded in
+the SDK.
+
 ## Current capability boundary
 
 Operational now:
@@ -27,7 +33,7 @@ Operational now:
 
 Not represented as complete:
 
-- audio input or output;
+- audio input or output until configured adapters are supplied;
 - camera-based vision reasoning;
 - avatar rendering;
 - automatic cloud-to-local handoff; or
