@@ -44,11 +44,28 @@ sessions in this repository.
 
 ```text
 backend/    FastAPI and WebSocket coaching runtime (Claude + Ollama runtimes)
+command-center/ Versioned shared command contract and browser SDK
 frontend/   React and Vite control surface
 research/   Pinned upstream evaluation record
 scripts/    Reproducible upstream-reference attachment
 .claude/    Project skills (cap-voice: Cap's coaching voice rules)
 ```
+
+## Captain Culinary Command Center
+
+Every Captain Culinary application can inspect
+`GET /command/v1/manifest` before starting a session. The manifest reports the
+shared protocol version, active runtime, immutable safety boundary, and only
+the interaction capabilities that are operational. The reusable browser client
+lives in `command-center/sdk/typescript`.
+
+The Command Center is additive. Captain Culinary Kids, Captain Culinary Pro
+Hub, and Core remain separate products and keep ownership of their
+product-specific consent, curriculum, progress, session-limit, and tool rules.
+
+The shared SDK also defines provider-neutral speech-input and speech-output
+adapter contracts. The manifest continues to report both as disabled until
+real adapters are configured and tested; no speech provider is hard-wired.
 
 ## LOCAL EGG TEST
 

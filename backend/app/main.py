@@ -11,6 +11,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect, status
 from fastapi.middleware.cors import CORSMiddleware
 
 from .agent import AgentRuntimeError, create_agent_runtime
+from .command import CommandManifest, build_command_manifest
 from .config import Settings
 from .contracts import AgentRuntimeAdapter
 from .session import CameraFrameMetadata, CoachSession
@@ -91,6 +92,10 @@ def create_app(
             "camera_retention": "none",
             "avatar_renderer": "disabled-pending-licensed-asset",
         }
+
+    @application.get("/command/v1/manifest", response_model=CommandManifest)
+    async def command_manifest() -> CommandManifest:
+        return build_command_manifest(runtime)
 
     @application.websocket("/ws/coach/{session_id}")
     async def coach_socket(websocket: WebSocket, session_id: str) -> None:
