@@ -47,3 +47,28 @@ def test_ollama_payload_uses_continuity_limits() -> None:
         assert captured["options"] == {"num_ctx": 4096}
 
     asyncio.run(scenario())
+
+
+def test_ollama_error_does_not_expose_provider_payload() -> None:
+    from app.agent import AgentRuntimeError
+    from test_api import settings
+    import pytest
+
+    async def scenario() -> None:
+        runtime = OllamaAgentRuntime(settings())
+        await runtime._client.aclose()
+        runtime._client = httpx.AsyncClient(
+            base_url="http://127.0.0.1:11434",
+            transport=httpx.MockTransport(lambda request: httpx.Response(
+                200, content=b'{"error":"synthetic-private-provider-detail"}\n'
+            )),
+        )
+        try:
+            with pytest.raises(AgentRuntimeError) as error:
+                async for _ in runtime.stream_reply(({"role": "user", "content": "Begin"},)):
+                    pass
+            assert "synthetic-private" not in str(error.value)
+        finally:
+            await runtime.close()
+
+    asyncio.run(scenario())

@@ -127,3 +127,19 @@ def test_unapproved_websocket_origin_is_rejected() -> None:
         except WebSocketDisconnect as exc:
             assert exc.code == 1008
             assert exc.reason == "Origin not allowed"
+
+
+def test_malformed_events_do_not_terminate_session() -> None:
+    with TestClient(create_app(settings(), FakeAgent())) as client:
+        with client.websocket_connect("/ws/coach/validation", headers={"origin": "http://localhost:5173"}) as websocket:
+            websocket.receive_json()
+            websocket.send_text("{broken")
+            assert websocket.receive_json()["code"] == "invalid-event"
+            for invalid in [None, [], "text", 42]:
+                websocket.send_json(invalid)
+                assert websocket.receive_json()["code"] == "invalid-event"
+            for invalid in [None, [], {"secret": "synthetic-test"}, 42]:
+                websocket.send_json({"type": "text-input", "text": invalid})
+                assert websocket.receive_json()["code"] == "invalid-input"
+            websocket.send_json({"type": "heartbeat"})
+            assert websocket.receive_json()["type"] == "heartbeat-ack"

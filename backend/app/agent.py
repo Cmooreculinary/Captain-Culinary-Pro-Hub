@@ -123,7 +123,7 @@ class OllamaAgentRuntime:
                     except json.JSONDecodeError as exc:
                         raise AgentRuntimeError("Ollama returned invalid streaming JSON") from exc
                     if event.get("error"):
-                        raise AgentRuntimeError(str(event["error"]))
+                        raise AgentRuntimeError("The local Ollama service could not complete the response")
                     content = event.get("message", {}).get("content", "")
                     if content:
                         yield str(content)

@@ -18,6 +18,8 @@ function App() {
   const [input, setInput] = useState("");
   const [entries, setEntries] = useState<TranscriptEntry[]>([]);
   const [streamingText, setStreamingText] = useState("");
+  const [responding, setResponding] = useState(false);
+  const speakRepliesRef = useRef(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [speakReplies, setSpeakReplies] = useState(false);
   const [runtimeNote, setRuntimeNote] = useState("Connect to check the coaching runtime.");
@@ -47,13 +49,15 @@ function App() {
   };
 
   const connect = () => {
-    if (socketRef.current?.readyState === WebSocket.OPEN) return;
+    if (socketRef.current && socketRef.current.readyState <= WebSocket.OPEN) return;
     setConnection("connecting");
     const socket = new WebSocket(`${endpoint}/${sessionId}`);
     socketRef.current = socket;
 
     socket.onclose = () => {
       setConnection("offline");
+      setResponding(false);
+      window.speechSynthesis?.cancel();
       setStreamingText("");
     };
     socket.onerror = () => {
@@ -61,7 +65,15 @@ function App() {
       setRuntimeNote("The local coaching socket could not be reached.");
     };
     socket.onmessage = (message) => {
-      const event = JSON.parse(message.data) as ServerEvent;
+      let event: ServerEvent;
+      try {
+        event = JSON.parse(message.data) as ServerEvent;
+        if (!event || typeof event !== "object") throw new Error("Invalid event");
+      } catch {
+        setResponding(false);
+        addEntry("system", "The coach sent an unreadable response. Reconnect and try again.");
+        return;
+      }
       if (event.type === "ready") {
         setConnection("ready");
         setRuntimeNote(
@@ -76,21 +88,25 @@ function App() {
       } else if (event.type === "text-delta") {
         setStreamingText((current) => current + (event.text || ""));
       } else if (event.type === "assistant-complete") {
+        setResponding(false);
         const text = event.text || "";
         if (text) {
           addEntry("captain", text);
-          if (speakReplies && "speechSynthesis" in window) {
+          if (speakRepliesRef.current && "speechSynthesis" in window) {
             window.speechSynthesis.cancel();
             window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
           }
         }
         setStreamingText("");
       } else if (event.type === "interruption-ack") {
+        setResponding(false);
         setStreamingText("");
         addEntry("system", "Response stopped.");
       } else if (event.type === "camera-frame-ack") {
         addEntry("system", "Camera frame transported for the spike. It was not retained or interpreted.");
       } else if (event.type === "error") {
+        setResponding(false);
+        setStreamingText("");
         addEntry("system", event.message || "The coaching runtime returned an error.");
       }
     };
@@ -98,7 +114,8 @@ function App() {
 
   const sendText = (text: string) => {
     const clean = text.trim();
-    if (!clean || socketRef.current?.readyState !== WebSocket.OPEN) return;
+    if (!clean || responding || socketRef.current?.readyState !== WebSocket.OPEN) return;
+    setResponding(true);
     addEntry("chef", clean);
     socketRef.current.send(JSON.stringify({ type: "text-input", text: clean }));
     setInput("");
@@ -111,7 +128,9 @@ function App() {
 
   const interrupt = () => {
     window.speechSynthesis?.cancel();
-    socketRef.current?.send(JSON.stringify({ type: "interrupt-signal" }));
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify({ type: "interrupt-signal" }));
+    }
   };
 
   const enableCamera = async () => {
@@ -157,12 +176,16 @@ function App() {
           <h2>EGG TEST</h2>
           <p className="muted">One narrow coaching exchange. One action at a time. Interrupt at any point.</p>
           <div className="rule" />
-          <button className="primary" onClick={connection === "ready" ? () => sendText("Start the egg test") : connect}>
+          <button className="primary" disabled={connection === "connecting" || responding} onClick={connection === "ready" ? () => sendText("Start the egg test") : connect}>
             {connection === "ready" ? "START THE EGG TEST" : "CONNECT LOCAL COACH"}
           </button>
           <button className="danger" onClick={interrupt} disabled={connection !== "ready"}>STOP RESPONSE</button>
           <label className="switch-row">
-            <input type="checkbox" checked={speakReplies} onChange={(event) => setSpeakReplies(event.target.checked)} />
+            <input type="checkbox" checked={speakReplies} onChange={(event) => {
+              speakRepliesRef.current = event.target.checked;
+              setSpeakReplies(event.target.checked);
+              if (!event.target.checked) window.speechSynthesis?.cancel();
+            }} />
             <span>Browser voice playback</span>
           </label>
           <p className="runtime-note">{runtimeNote}</p>
@@ -199,7 +222,7 @@ function App() {
               disabled={connection !== "ready"}
               aria-label="Coaching instruction"
             />
-            <button type="submit" disabled={connection !== "ready" || !input.trim()}>SEND</button>
+            <button type="submit" disabled={connection !== "ready" || responding || !input.trim()}>SEND</button>
           </form>
         </section>
 
@@ -215,6 +238,12 @@ function App() {
           <button className="secondary" onClick={cameraActive ? sendCameraFrame : enableCamera}>
             {cameraActive ? "SEND ONE FRAME" : "ENABLE CAMERA"}
           </button>
+          {cameraActive && <button className="secondary" onClick={() => {
+            cameraStreamRef.current?.getTracks().forEach((track) => track.stop());
+            cameraStreamRef.current = null;
+            if (videoRef.current) videoRef.current.srcObject = null;
+            setCameraActive(false);
+          }}>TURN CAMERA OFF</button>}
           <div className="license-gate">
             <p className="section-label">AVATAR RENDERER</p>
             <strong>LICENSE GATE ACTIVE</strong>

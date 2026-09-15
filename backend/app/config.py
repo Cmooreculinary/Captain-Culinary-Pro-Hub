@@ -23,7 +23,9 @@ def _parse_origins(raw: str) -> tuple[str, ...]:
         if origin == "*":
             raise ValueError("Wildcard CORS origins are prohibited")
         parsed = urlparse(origin)
-        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+                or "*" in parsed.netloc or parsed.username is not None
+                or parsed.password is not None or parsed.path or parsed.query or parsed.fragment):
             raise ValueError(f"Invalid CORS origin: {origin}")
     return origins
 

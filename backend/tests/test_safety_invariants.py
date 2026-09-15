@@ -191,7 +191,7 @@ class TestOllamaOfflineFallback:
             base_url="http://127.0.0.1:11434",
             transport=httpx.MockTransport(handler),
         )
-        with pytest.raises(AgentRuntimeError, match="model not found"):
+        with pytest.raises(AgentRuntimeError, match="could not complete the response"):
             async for _ in runtime.stream_reply(({"role": "user", "content": "hi"},)):
                 pass
         await runtime.close()

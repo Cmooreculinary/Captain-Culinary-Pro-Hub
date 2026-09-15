@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import binascii
+import json
 import re
 from contextlib import asynccontextmanager
 from typing import Any
@@ -158,7 +159,14 @@ def create_app(
 
         try:
             while True:
-                event = await websocket.receive_json()
+                try:
+                    event = await websocket.receive_json()
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    await send({"type": "error", "code": "invalid-event", "message": "Send a JSON object"})
+                    continue
+                if not isinstance(event, dict):
+                    await send({"type": "error", "code": "invalid-event", "message": "Send a JSON object"})
+                    continue
                 event_type = event.get("type")
 
                 if event_type == "heartbeat":
@@ -201,7 +209,11 @@ def create_app(
                     continue
 
                 if event_type == "text-input":
-                    text = str(event.get("text", "")).strip()
+                    raw_text = event.get("text")
+                    if not isinstance(raw_text, str):
+                        await send({"type": "error", "code": "invalid-input", "message": "Text input must be a string"})
+                        continue
+                    text = raw_text.strip()
                     if not text:
                         await send({"type": "error", "code": "empty-input", "message": "Text input is required"})
                         continue
@@ -223,6 +235,8 @@ def create_app(
 
                 await send({"type": "error", "code": "unknown-event", "message": "Unsupported event type"})
         except WebSocketDisconnect:
+            pass
+        finally:
             await session.interrupt()
 
     return application
