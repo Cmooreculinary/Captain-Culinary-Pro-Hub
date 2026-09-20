@@ -5,8 +5,13 @@ alwaysApply: true
 
 # Utilize GitHub Copilot
 
+ACTIVE AND LONG-TERM MEMORY. Do not drop this between sessions. Do not wait
+to be re-asked.
+
 The operator has GitHub Copilot and wants it used at will. This is standing
-long-term policy, not a one-off.
+policy, stored in this always-on Cursor rule, `AGENTS.md`, `CLAUDE.md`,
+`.github/copilot-instructions.md`, `.github/agents/captain-culinary.agent.md`,
+and `memory/COPILOT.md`.
 
 ## When to hand work to Copilot
 

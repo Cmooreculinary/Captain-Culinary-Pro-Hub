@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Copilot is a standing teammate. Paste a long brief. It can handle complexity.
-        Default brief: `.github/copilot-briefs/dependabot-fable-triage.md`
+        Copilot is a standing teammate (active + long-term memory). Paste a long brief.
+        It can handle complexity. Default brief: `.github/copilot-briefs/dependabot-fable-triage.md`
   - type: dropdown
     id: brief
     attributes:

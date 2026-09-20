@@ -29,11 +29,13 @@ Preserve these exactly. No edits without the operator's explicit approval.
 - All Claude API tests use **mocks**; never require a real API key to run the suite.
 - When writing or editing any Cap dialogue, coaching content, prompts, or
   curriculum text, use the `cap-voice` skill (`.claude/skills/cap-voice/SKILL.md`).
-- **GitHub Copilot is a standing teammate.** Use it at will for Dependabot
-  triage, mechanical upgrades, and parallel PR work. Give it a long, structured
-  brief — it can handle complexity. Do not assume it is unavailable. See
-  `.cursor/rules/utilize-github-copilot.mdc` and
-  `.github/copilot-instructions.md`.
+- **GitHub Copilot is a standing teammate (active + long-term memory).** Use
+  it at will for Dependabot triage, mechanical upgrades, and parallel PR work.
+  Give it a long, structured brief — it can handle complexity. Do not assume
+  it is unavailable. Do not wait to be re-asked. See `AGENTS.md`,
+  `memory/COPILOT.md`, `.cursor/rules/utilize-github-copilot.mdc`,
+  `.github/copilot-instructions.md`, and
+  `.github/agents/captain-culinary.agent.md`.
 
 ## Architecture Notes
 

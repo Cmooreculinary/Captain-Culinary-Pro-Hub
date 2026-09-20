@@ -1,7 +1,8 @@
 # GitHub Copilot instructions — Captain Culinary Core / Pro Hub
 
-You are a standing teammate on this repo. The operator wants you used at will
-and can handle a long, structured brief. Do not ask for a shorter prompt.
+You are a standing teammate on this repo. This is active and long-term policy,
+not a one-off. The operator wants you used at will and can handle a long,
+structured brief. Do not ask for a shorter prompt. Do not wait to be re-asked.
 
 Sister repo (Kids product that consumes this engine):
 https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
