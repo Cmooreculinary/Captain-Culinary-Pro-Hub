@@ -1,0 +1,35 @@
+name: Assign Copilot
+description: Hand GitHub Copilot a structured Captain Culinary Core task
+title: "[Copilot] "
+labels: ["copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Copilot is a standing teammate (active + long-term memory). Paste a long brief.
+        It can handle complexity. Default brief: `.github/copilot-briefs/dependabot-fable-triage.md`
+  - type: dropdown
+    id: brief
+    attributes:
+      label: Starting brief
+      options:
+        - Dependabot + Fable 5.1 follow-through (use repo copilot-brief)
+        - Custom (paste below)
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      description: Long structured prompt. Include shipped work, land/adapt/hold, verify commands, hard nos.
+      value: |
+        Read `.github/copilot-instructions.md` and `.github/copilot-briefs/dependabot-fable-triage.md`.
+        Fetch origin/main. Highest risk: anthropic 0.x → 1.x in backend/app/agent.py.
+        Land safe patch/minors. Hold or prove TS 7 in the command-center SDK.
+        Keep CLAUDE_MODEL default claude-fable-5-1. Keep pytest mocked. Coverage gate 85%.
+        Verify with the commands in copilot-instructions.md. Open focused PRs. Then stop.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: After opening, assign **Copilot** as the assignee so Coding Agent picks this up.
