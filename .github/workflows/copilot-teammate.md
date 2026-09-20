@@ -33,9 +33,8 @@ tools:
 
 # Copilot teammate — Pro Hub Dependabot follow-through
 
-First tool call: `gh pr list --state open --limit 20`. Do not list directories. Do not cat lockfiles.
+First tool: `gh pr list --state open --limit 20`. Second: `gh pr checkout 20` (dnspython) or `gh pr checkout 16` (plugin-react). Do not ls trees. Do not cat lockfiles.
 
 HOLD: anthropic #17, TypeScript 7 #14.
-Pick ONE land: react+#19 together, or dnspython #20, or uvicorn #18, or plugin-react #16, or setup-node #11 / setup-python #12.
-Branch from origin/main. Do not revert Fable 5.1 or wrangler.jsonc.
-Open one draft PR. Then stop.
+If checkout+tests pass, open one draft PR from that work (or noop if the Dependabot PR is already merge-ready).
+Do not revert Fable 5.1 or wrangler.jsonc. Then stop.
