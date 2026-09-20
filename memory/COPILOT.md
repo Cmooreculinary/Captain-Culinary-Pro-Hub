@@ -43,8 +43,11 @@ Copilot. A one-shot Actions job using `GITHUB_TOKEN` also cannot: GraphQL
 `suggestedActors(CAN_BE_ASSIGNED)` only returns `Cmooreculinary` (no
 `copilot-swe-agent`), REST `agent_assignment` is 403, and Copilot PR review
 requests 422 (not a collaborator). The agent-tasks API needs a user token
-with a Copilot license. A human logged in as Chris, or a user PAT, can start
-it.
+with a Copilot license. A GitHub Agentic Workflow (`.github/workflows/copilot-teammate.md`) runs
+**Copilot CLI** in Actions with `gpt-4.1`. A live run on 2026-09-20 did start
+and inspect Dependabot, then hit Copilot **429 Too Many Requests** after
+~700k tokens. The workflow is now inventory-only via `gh pr list`, 15-turn
+cap, dispatch from `main` after this PR merges.
 
 ## How to start a Copilot run (human click)
 
