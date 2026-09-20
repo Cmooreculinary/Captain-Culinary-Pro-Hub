@@ -29,15 +29,28 @@ request. Keep it in active session goals and in this file forever.
 
 Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
 
-## How to start a Copilot run (human click; this token cannot assign)
+## Copilot enablement (this repo)
 
-GitHub App tokens cannot start Copilot cloud agent. Do this while logged
-in as Chris:
+This public Hub repo does **not** currently show GitHub’s
+`copilot-swe-agent/copilot` dynamic workflow (Kids already does). Enable
+Copilot coding agent for this repository while logged in as Chris:
+repo **Settings → Copilot → coding agent**, then merge memory PR #24 so
+`copilot-instructions.md`, the custom agent, and `copilot-setup-steps.yml`
+land on `main`.
 
-1. Open https://github.com/copilot/agents
-2. Choose **Captain-Culinary-Pro-Hub**
-3. Paste: `Read .github/copilot-briefs/dependabot-fable-triage.md and do that. Open a pull request. Then stop.`
-4. Start the task
+Cursor Cloud Agent tokens (`ghs_` GitHub App installs) **cannot assign**
+Copilot. `GITHUB_TOKEN` in Actions also cannot start the agent-tasks API.
+A human logged in as Chris, or a user PAT with a Copilot license, can.
+
+## How to start a Copilot run (human click)
+
+Do this while logged in as Chris:
+
+1. Merge memory PR #24 so Copilot loads instructions from `main`.
+2. Open https://github.com/copilot/agents
+3. Choose **Captain-Culinary-Pro-Hub**
+4. Paste: `Read .github/copilot-briefs/dependabot-fable-triage.md and do that. Open a pull request. Then stop.`
+5. Start the task
 
 Or assign **Copilot** on the already-briefed issue:
 https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
