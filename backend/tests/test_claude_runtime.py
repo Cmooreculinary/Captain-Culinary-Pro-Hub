@@ -27,7 +27,7 @@ def settings(**overrides) -> Settings:
         ws_allow_missing_origin=False,
         agent_provider="claude",
         anthropic_api_key="test-key-not-real",
-        claude_model="claude-fable-5",
+        claude_model="claude-fable-5-1",
     )
     values.update(overrides)
     return Settings(**values)
@@ -91,7 +91,7 @@ async def test_streams_text_with_unchanged_system_prompt():
     ]
 
     assert chunks == ["Confirm your station ", "is clear."]
-    assert client.stream_kwargs["model"] == "claude-fable-5"
+    assert client.stream_kwargs["model"] == "claude-fable-5-1"
     assert client.stream_kwargs["system"] == PROTOTYPE_SYSTEM_PROMPT
     assert client.stream_kwargs["messages"] == [
         {"role": "user", "content": "Start the egg test"}
@@ -187,7 +187,7 @@ def test_provider_switch_selects_the_right_runtime():
 
     assert isinstance(claude, ClaudeAgentRuntime)
     assert claude.provider == "claude"
-    assert claude.model == "claude-fable-5"
+    assert claude.model == "claude-fable-5-1"
     assert claude.configured is False
     assert isinstance(ollama, OllamaAgentRuntime)
     assert ollama.provider == "ollama"

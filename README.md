@@ -15,12 +15,12 @@ agent boundary owned by BCA.
 The model provider is chosen by a single line in `backend/.env`:
 
 ```bash
-AGENT_PROVIDER=claude   # Claude Fable 5 via the Anthropic API (default)
+AGENT_PROVIDER=claude   # Claude Fable 5.1 via the Anthropic API (default)
 AGENT_PROVIDER=ollama   # fully offline local fallback
 ```
 
 With `claude`, set `ANTHROPIC_API_KEY` in `backend/.env` and optionally
-`CLAUDE_MODEL` (default `claude-fable-5`). With `ollama`, set `OLLAMA_MODEL`
+`CLAUDE_MODEL` (default `claude-fable-5-1`). With `ollama`, set `OLLAMA_MODEL`
 to an exact local model name from `ollama list`. `GET /health` reports the
 active provider and model. Both providers implement the same
 `AgentRuntimeAdapter` protocol (`backend/app/contracts.py`), so the coaching
@@ -69,7 +69,7 @@ real adapters are configured and tested; no speech provider is hard-wired.
 
 ## LOCAL EGG TEST
 
-Exact copy-paste steps to run Cap on your own machine with Claude Fable 5.
+Exact copy-paste steps to run Cap on your own machine with Claude Fable 5.1.
 Requirements: Python 3.11+ and Node.js 20.19+ (or 22.12+).
 Start in the Captain Culinary Core repository root—the folder containing this
 README.
@@ -92,7 +92,7 @@ README.
    ANTHROPIC_API_KEY=
    ```
 
-   Leave `AGENT_PROVIDER=claude` and `CLAUDE_MODEL=claude-fable-5` as they are.
+   Leave `AGENT_PROVIDER=claude` and `CLAUDE_MODEL=claude-fable-5-1` as they are.
 
 3. Start the backend:
 
@@ -115,7 +115,7 @@ README.
    ```
 
 5. Open `http://localhost:5173`. The status note should read
-   **"Coach online: claude / claude-fable-5."**
+   **"Coach online: claude / claude-fable-5-1."**
 
 6. Click **CONNECT LOCAL COACH**, then **START THE EGG TEST**. Cap should ask
    you to confirm the station is safe — one step at a time.
