@@ -7,6 +7,8 @@ on:
     paths:
       - .github/workflows/copilot-teammate.md
       - .github/workflows/copilot-teammate.lock.yml
+  bots: [cursor]
+  roles: all
 permissions:
   contents: read
   issues: read
