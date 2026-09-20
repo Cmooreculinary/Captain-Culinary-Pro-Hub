@@ -18,7 +18,7 @@ permissions:
 engine:
   id: copilot
   model: gpt-4.1
-max-turns: 15
+max-turns: 40
 strict: true
 timeout-minutes: 20
 safe-outputs:
@@ -38,11 +38,9 @@ tools:
 
 # Copilot teammate — Pro Hub Dependabot follow-through
 
-Standing teammate. Inventory with `gh pr list --state open --limit 30` only.
-Do not cat lockfiles.
+First tool call: `gh pr list --state open --limit 20`. Do not list directories. Do not cat lockfiles.
 
-Do not revert `CLAUDE_MODEL=claude-fable-5-1`, forced `tool_choice`, or `wrangler.jsonc`.
-HOLD: anthropic 1.x (#17) unless you can adapt `ClaudeAgentRuntime` with tests.
-HOLD: TypeScript 7 (#14) unless `command-center/sdk/typescript` still builds.
-If you land anything, land at most one focused group (react+react-dom together, or a pip patch).
-Work from origin/main on a new branch. Then stop.
+HOLD: anthropic #17, TypeScript 7 #14.
+Pick ONE land: react+#19 together, or dnspython #20, or uvicorn #18, or plugin-react #16, or setup-node #11 / setup-python #12.
+Branch from origin/main. Do not revert Fable 5.1 or wrangler.jsonc.
+Open one draft PR. Then stop.
