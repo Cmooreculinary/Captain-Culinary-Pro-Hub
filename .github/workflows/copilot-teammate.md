@@ -17,6 +17,7 @@ permissions:
   copilot-requests: write
 engine:
   id: copilot
+  model: gpt-4.1
 strict: true
 timeout-minutes: 25
 safe-outputs:
