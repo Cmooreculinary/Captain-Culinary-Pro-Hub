@@ -36,8 +36,14 @@ Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
 3. Paste `.github/copilot-briefs/dependabot-fable-triage.md` into the body.
 4. Assign **Copilot** as the assignee.
 
-This Cursor cloud token **cannot** assign Copilot (`copilot-swe-agent` 403).
-Hub stub already open:
+This Cursor cloud token **cannot** assign Copilot. GitHub requires a
+user-to-server token with a Copilot license; `suggestedActors` for this
+installation only returns `Cmooreculinary`, not `copilot-swe-agent`.
+
+Briefed Hub issue (assign Copilot here):
+https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
+
+Stub to close (body is only "probe"):
 https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
 
 ## Current Copilot brief (Pro Hub)

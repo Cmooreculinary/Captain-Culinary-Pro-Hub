@@ -17,8 +17,8 @@ Load next:
 - `.cursor/rules/utilize-github-copilot.mdc` — every Cursor session
 - `memory/COPILOT.md` — long-term operator memory
 
-To start Copilot: GitHub → Issues → New issue → **Assign Copilot** → assign
-Copilot. Reuse https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
-if it is still open: paste the brief, assign Copilot.
+To start Copilot: assign **Copilot** on
+https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
+(already briefed). Or after merge: Issues → New issue → **Assign Copilot**.
 
 Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
