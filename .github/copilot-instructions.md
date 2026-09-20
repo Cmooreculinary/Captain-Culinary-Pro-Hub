@@ -45,7 +45,7 @@ Other majors to hold or adapt with proof:
 Likely-safe after CI: dnspython, uvicorn, `@vitejs/plugin-react`,
 actions/setup-node, actions/setup-python.
 
-Do not mix in PR #2 (Cloudflare Workers autoconfig) unless your bump breaks it.
+#2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
 
 ## Hard nos
 

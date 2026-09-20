@@ -52,4 +52,4 @@ HOLD or prove build: TypeScript 5 → 7 (#14) in command-center SDK.
 LAND together: react + react-dom type bumps (#23 + #19).
 LAND if CI green: dnspython, uvicorn, @vitejs/plugin-react, actions/setup-node 7,
 actions/setup-python 7.
-Do not mix PR #2 (Cloudflare Workers) unless a bump breaks it.
+#2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.

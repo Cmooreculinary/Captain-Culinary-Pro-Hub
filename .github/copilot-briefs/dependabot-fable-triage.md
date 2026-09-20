@@ -26,7 +26,7 @@ Land react and react-dom bumps together. Hold TypeScript 7 in the SDK unless
 `command-center/sdk/typescript` still builds.
 
 Do not revert `CLAUDE_MODEL` default. Do not add forced `tool_choice`.
-Do not mix PR #2 (Cloudflare Workers) unless a bump breaks it.
+#2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
 
 ## Verify
 
