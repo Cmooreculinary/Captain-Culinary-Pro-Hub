@@ -2,6 +2,8 @@
 description: Standing Copilot teammate — Dependabot land/adapt/hold for Pro Hub
 on:
   workflow_dispatch:
+  push:
+    branches: [cursor/copilot-hub-brief-refresh-2129]
   bots: [cursor]
   roles: all
 permissions:
@@ -13,9 +15,16 @@ permissions:
 engine:
   id: copilot
   model: gpt-4.1
-max-turns: 40
+max-turns: 15
 strict: true
 timeout-minutes: 20
+network:
+  allowed:
+    - defaults
+    - github
+    - copilot
+    - node
+    - python
 safe-outputs:
   create-pull-request:
     title-prefix: "[Copilot] "
