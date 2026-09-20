@@ -16,18 +16,26 @@ Ollama fallback stays working. 85% coverage gate stays. Claude tests stay mocked
 
 ## Highest priority
 
-Adapt or hold `anthropic` 0.x → 1.x. Read the SDK changelog. Update
+Adapt or hold `anthropic` 0.x → 1.x (#17). Read the SDK changelog. Update
 `backend/app/agent.py` `ClaudeAgentRuntime` and
 `backend/tests/test_claude_runtime.py` if `messages.stream` changed.
 If the coaching loop must be rewritten, HOLD and explain. Never force-merge.
+CI green on #17 is not proof — Claude tests are mocked.
 
-Then land safe patch/minors (dnspython #20, uvicorn #18, plugin-react #16,
-actions/setup-node #11, actions/setup-python #12).
-Land **#23 before #19** (react + react-dom; #19 is red alone). Hold TypeScript 7
-(#14) in the SDK unless `command-center/sdk/typescript` still builds.
+Then land safe patch/minors if CI is still green:
+- frontend npm-patch-minor group #32 (react 19.3 + react-dom 19.3 +
+  `@vitejs/plugin-react` together; this replaced closed #16 / #19 / #23)
+- pytest-cov #30
+- github/gh-aw-actions/setup #31
+- dnspython #20, uvicorn #18
+- actions/setup-node #11, actions/setup-python #12
+
+HOLD TypeScript 7 (#14) unless you re-read the SDK changelog and want that
+major. `command-center/sdk/typescript` CI is currently green.
 
 Do not revert `CLAUDE_MODEL` default. Do not add forced `tool_choice`.
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
+Memory PR #24 is already on `main`. Do not redo it.
 
 ## Verify
 
