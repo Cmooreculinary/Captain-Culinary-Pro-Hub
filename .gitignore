@@ -12,3 +12,9 @@ frontend/.env.local
 command-center/sdk/typescript/node_modules/
 command-center/sdk/typescript/dist/
 *.tsbuildinfo
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
