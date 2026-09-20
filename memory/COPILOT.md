@@ -23,7 +23,7 @@ request. Keep it in active session goals and in this file forever.
 | `.github/copilot-instructions.md` | Copilot Coding Agent (auto-load) |
 | `.github/agents/captain-culinary.agent.md` | Copilot custom agent picker |
 | `.github/copilot-briefs/dependabot-fable-triage.md` | Paste into an issue |
-| `.github/ISSUE_TEMPLATE/copilot-task.yml` | New issue → **Assign Copilot** |
+| `.github/workflows/copilot-teammate.md` | Copilot CLI in GitHub Actions (`gh aw`) |
 | `.cursor/rules/utilize-github-copilot.mdc` | Every Cursor session (`alwaysApply`) |
 | this file | Long-term operator memory |
 
