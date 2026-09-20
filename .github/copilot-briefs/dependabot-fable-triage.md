@@ -21,9 +21,10 @@ Adapt or hold `anthropic` 0.x → 1.x. Read the SDK changelog. Update
 `backend/tests/test_claude_runtime.py` if `messages.stream` changed.
 If the coaching loop must be rewritten, HOLD and explain. Never force-merge.
 
-Then land safe patch/minors (dnspython, uvicorn, plugin-react, Actions).
-Land react and react-dom bumps together. Hold TypeScript 7 in the SDK unless
-`command-center/sdk/typescript` still builds.
+Then land safe patch/minors (dnspython #20, uvicorn #18, plugin-react #16,
+actions/setup-node #11, actions/setup-python #12).
+Land **#23 before #19** (react + react-dom; #19 is red alone). Hold TypeScript 7
+(#14) in the SDK unless `command-center/sdk/typescript` still builds.
 
 Do not revert `CLAUDE_MODEL` default. Do not add forced `tool_choice`.
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.

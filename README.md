@@ -37,7 +37,8 @@ The safety invariants are identical no matter which provider runs:
 - No wildcard CORS; explicit origins only. No secrets in code, commits, or
   logs — API keys live only in untracked `.env` files.
 
-See `CLAUDE.md` for the full working agreement that governs AI-assisted
+See `AGENTS.md` for the shared Cursor + Copilot + human workflow, and
+`CLAUDE.md` for the full working agreement that governs AI-assisted
 sessions in this repository.
 
 ## Repository layout

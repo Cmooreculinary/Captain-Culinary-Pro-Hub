@@ -40,10 +40,11 @@ Never force-merge this major.
 
 Other majors to hold or adapt with proof:
 - TypeScript 5 → 7 in `command-center/sdk/typescript` (only if `npm run build` there passes)
-- React 19 type package bumps: land `react` and `react-dom` together, never one-sided
+- React 19 type package bumps: land **#23 before #19** (react 19.3 with
+  react-dom 19.3; #19 is red alone)
 
-Likely-safe after CI: dnspython, uvicorn, `@vitejs/plugin-react`,
-actions/setup-node, actions/setup-python.
+Likely-safe after CI: dnspython #20, uvicorn #18, `@vitejs/plugin-react` #16,
+actions/setup-node #11, actions/setup-python #12.
 
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
 

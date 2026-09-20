@@ -69,7 +69,7 @@ Close stub https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
 
 ADAPT OR HOLD: anthropic 0.x → 1.x (#17) in `backend/app/agent.py`.
 HOLD or prove build: TypeScript 5 → 7 (#14) in command-center SDK.
-LAND together: react + react-dom type bumps (#23 + #19).
-LAND if CI green: dnspython, uvicorn, @vitejs/plugin-react, actions/setup-node 7,
-actions/setup-python 7.
+LAND together: **#23 before #19** (react + react-dom; #19 is red alone).
+LAND if CI green: dnspython #20, uvicorn #18, @vitejs/plugin-react #16,
+actions/setup-node #11, actions/setup-python #12.
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.

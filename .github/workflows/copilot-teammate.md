@@ -36,5 +36,6 @@ tools:
 First tool: `gh pr list --state open --limit 20`. Second: `gh pr checkout 20` (dnspython) or `gh pr checkout 16` (plugin-react). Do not ls trees. Do not cat lockfiles.
 
 HOLD: anthropic #17, TypeScript 7 #14.
+Land **#23 before #19** if touching react (never #19 alone).
 If checkout+tests pass, open one draft PR from that work (or noop if the Dependabot PR is already merge-ready).
 Do not revert Fable 5.1 or wrangler.jsonc. Then stop.
