@@ -39,8 +39,12 @@ repo **Settings → Copilot → coding agent**, then merge memory PR #24 so
 land on `main`.
 
 Cursor Cloud Agent tokens (`ghs_` GitHub App installs) **cannot assign**
-Copilot. `GITHUB_TOKEN` in Actions also cannot start the agent-tasks API.
-A human logged in as Chris, or a user PAT with a Copilot license, can.
+Copilot. A one-shot Actions job using `GITHUB_TOKEN` also cannot: GraphQL
+`suggestedActors(CAN_BE_ASSIGNED)` only returns `Cmooreculinary` (no
+`copilot-swe-agent`), REST `agent_assignment` is 403, and Copilot PR review
+requests 422 (not a collaborator). The agent-tasks API needs a user token
+with a Copilot license. A human logged in as Chris, or a user PAT, can start
+it.
 
 ## How to start a Copilot run (human click)
 
