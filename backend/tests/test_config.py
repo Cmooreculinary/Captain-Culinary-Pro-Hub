@@ -3,13 +3,18 @@ import pytest
 from app.config import Settings, _parse_origins
 
 
-def test_provider_defaults_to_claude_fable_5(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_provider_defaults_to_claude_fable_5_1(monkeypatch: pytest.MonkeyPatch) -> None:
     for name in ("AGENT_PROVIDER", "ANTHROPIC_API_KEY", "CLAUDE_MODEL"):
         monkeypatch.delenv(name, raising=False)
     settings = Settings.from_env()
     assert settings.agent_provider == "claude"
-    assert settings.claude_model == "claude-fable-5"
+    assert settings.claude_model == "claude-fable-5-1"
     assert settings.anthropic_api_key == ""
+
+
+def test_claude_model_can_be_overridden(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CLAUDE_MODEL", "claude-fable-5")
+    assert Settings.from_env().claude_model == "claude-fable-5"
 
 
 def test_provider_can_switch_to_ollama(monkeypatch: pytest.MonkeyPatch) -> None:

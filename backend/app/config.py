@@ -52,7 +52,7 @@ class Settings:
     ws_allow_missing_origin: bool
     agent_provider: str = "claude"
     anthropic_api_key: str = ""
-    claude_model: str = "claude-fable-5"
+    claude_model: str = "claude-fable-5-1"
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -90,7 +90,7 @@ class Settings:
             ws_allow_missing_origin=_parse_bool(os.getenv("WS_ALLOW_MISSING_ORIGIN", "false")),
             agent_provider=agent_provider,
             anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", "").strip(),
-            claude_model=os.getenv("CLAUDE_MODEL", "").strip() or "claude-fable-5",
+            claude_model=os.getenv("CLAUDE_MODEL", "").strip() or "claude-fable-5-1",
         )
 
     def origin_is_allowed(self, origin: str | None) -> bool:
