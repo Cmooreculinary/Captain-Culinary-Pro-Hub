@@ -2,11 +2,6 @@
 description: Standing Copilot teammate — Dependabot land/adapt/hold for Pro Hub
 on:
   workflow_dispatch:
-  push:
-    branches: [cursor/copilot-working-memory-2129]
-    paths:
-      - .github/workflows/copilot-teammate.md
-      - .github/workflows/copilot-teammate.lock.yml
   bots: [cursor]
   roles: all
 permissions:
