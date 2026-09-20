@@ -51,3 +51,7 @@ Dependabot list with land/adapt/hold; verification (`cd backend && pytest`,
 (no secrets, no wildcard CORS, no lowering the 85% coverage gate, no
 reverting Fable 5.1); and to stop after focused PRs rather than starting a
 new epic.
+
+Copilot auto-loads `.github/copilot-instructions.md`. The assignable brief is
+`.github/copilot-briefs/dependabot-fable-triage.md`. To start a Copilot run:
+GitHub → New issue → **Assign Copilot** → assign Copilot as assignee.

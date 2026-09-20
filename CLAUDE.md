@@ -32,7 +32,8 @@ Preserve these exactly. No edits without the operator's explicit approval.
 - **GitHub Copilot is a standing teammate.** Use it at will for Dependabot
   triage, mechanical upgrades, and parallel PR work. Give it a long, structured
   brief — it can handle complexity. Do not assume it is unavailable. See
-  `.cursor/rules/utilize-github-copilot.mdc`.
+  `.cursor/rules/utilize-github-copilot.mdc` and
+  `.github/copilot-instructions.md`.
 
 ## Architecture Notes
 
