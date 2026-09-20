@@ -29,6 +29,10 @@ Preserve these exactly. No edits without the operator's explicit approval.
 - All Claude API tests use **mocks**; never require a real API key to run the suite.
 - When writing or editing any Cap dialogue, coaching content, prompts, or
   curriculum text, use the `cap-voice` skill (`.claude/skills/cap-voice/SKILL.md`).
+- **GitHub Copilot is a standing teammate.** Use it at will for Dependabot
+  triage, mechanical upgrades, and parallel PR work. Give it a long, structured
+  brief — it can handle complexity. Do not assume it is unavailable. See
+  `.cursor/rules/utilize-github-copilot.mdc`.
 
 ## Architecture Notes
 

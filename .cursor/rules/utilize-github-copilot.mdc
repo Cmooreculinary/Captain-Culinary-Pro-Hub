@@ -1,0 +1,53 @@
+---
+description: Standing instruction to use GitHub Copilot as a teammate
+alwaysApply: true
+---
+
+# Utilize GitHub Copilot
+
+The operator has GitHub Copilot and wants it used at will. This is standing
+long-term policy, not a one-off.
+
+## When to hand work to Copilot
+
+Prefer Copilot (Coding Agent or a Copilot-authored PR) for:
+
+- Dependabot floods (triage land / adapt / hold)
+- Mechanical upgrades that still need tests and lockfile discipline
+- Parallel PR review across many small bumps
+- Implementing a brief this agent already scoped
+
+Keep the Cursor agent for product judgment, safety invariants, Fable/Ollama
+runtime design, and writing the Copilot brief.
+
+Copilot can take a long, structured prompt. Do not oversimplify. Include
+repos, what is already shipped, what is in scope, hard nos, and verify
+commands.
+
+## This product
+
+Captain Culinary Core / Pro Hub: shared engine for Kids and Pro Hub.
+Provider-neutral `AgentRuntimeAdapter`. Default brain is Claude Fable 5.1
+(`CLAUDE_MODEL=claude-fable-5-1`). Ollama stays the offline fallback.
+All Claude API tests stay mocked — never require a real key to run pytest.
+
+Already shipped: npm audit pins (#9), Fable 5.1 default + Dependabot (#10).
+Do not revert `claude-fable-5-1`. `claude-fable-5` remains a valid override.
+
+Highest-risk Dependabot bump: `anthropic` 0.x → 1.x. That can break Fable
+streaming in `backend/app/agent.py`. Treat it as adapt-or-hold, never
+force-merge.
+
+Fable 5.1 rejects forced `tool_choice` (`any` / named tool). Do not add those.
+
+Sister repo: `Cmooreculinary/Captain-Culinary-Kids-June`. Brief Copilot on
+both when the work crosses them.
+
+## Brief template (use this, expand as needed)
+
+Tell Copilot: the two repo URLs; already-shipped PR numbers; current open
+Dependabot list with land/adapt/hold; verification (`cd backend && pytest`,
+`cd frontend && npm audit --audit-level=high && npm run build`); hard nos
+(no secrets, no wildcard CORS, no lowering the 85% coverage gate, no
+reverting Fable 5.1); and to stop after focused PRs rather than starting a
+new epic.
