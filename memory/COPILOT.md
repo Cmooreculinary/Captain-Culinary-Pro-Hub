@@ -32,9 +32,9 @@ Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
 ## How to start a Copilot run (human click; this token cannot assign)
 
 1. Merge the Copilot-memory PR if it is still open.
-2. GitHub → Issues → New issue → **Assign Copilot** (or reuse issue #25).
-3. Paste `.github/copilot-briefs/dependabot-fable-triage.md` into the body.
-4. Assign **Copilot** as the assignee.
+2. Open issue #26 (already briefed) or New issue → **Assign Copilot**.
+3. Assign **Copilot** as the assignee.
+4. Close issue #25 (stub, body is only `probe`).
 
 This Cursor cloud token **cannot** assign Copilot. GitHub requires a
 user-to-server token with a Copilot license; `suggestedActors` for this
