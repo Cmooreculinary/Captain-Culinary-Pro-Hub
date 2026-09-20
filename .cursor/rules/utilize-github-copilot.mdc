@@ -59,4 +59,5 @@ new epic.
 
 Copilot auto-loads `.github/copilot-instructions.md`. The assignable brief is
 `.github/copilot-briefs/dependabot-fable-triage.md`. To start a Copilot run:
-GitHub → New issue → **Assign Copilot** → assign Copilot as assignee.
+open https://github.com/copilot/agents (logged in as the operator), pick this
+repo, and paste the brief. Or GitHub → issue → assign Copilot.

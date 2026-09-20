@@ -31,20 +31,19 @@ Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
 
 ## How to start a Copilot run (human click; this token cannot assign)
 
-1. Merge the Copilot-memory PR if it is still open.
-2. Open issue #26 (already briefed) or New issue → **Assign Copilot**.
-3. Assign **Copilot** as the assignee.
-4. Close issue #25 (stub, body is only `probe`).
+GitHub App tokens cannot start Copilot cloud agent. Do this while logged
+in as Chris:
 
-This Cursor cloud token **cannot** assign Copilot. GitHub requires a
-user-to-server token with a Copilot license; `suggestedActors` for this
-installation only returns `Cmooreculinary`, not `copilot-swe-agent`.
+1. Open https://github.com/copilot/agents
+2. Choose **Captain-Culinary-Pro-Hub**
+3. Paste: `Read .github/copilot-briefs/dependabot-fable-triage.md and do that. Open a pull request. Then stop.`
+4. Start the task
 
-Briefed Hub issue (assign Copilot here):
+Or assign **Copilot** on the already-briefed issue:
 https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
 
-Stub to close (body is only "probe"):
-https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
+Close stub https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
+(body is only `probe`).
 
 ## Current Copilot brief (Pro Hub)
 

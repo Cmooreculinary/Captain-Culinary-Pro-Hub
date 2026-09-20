@@ -17,8 +17,8 @@ Load next:
 - `.cursor/rules/utilize-github-copilot.mdc` — every Cursor session
 - `memory/COPILOT.md` — long-term operator memory
 
-To start Copilot: assign **Copilot** on
-https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
-(already briefed). Or after merge: Issues → New issue → **Assign Copilot**.
+To start Copilot: open https://github.com/copilot/agents , pick this repo,
+and paste `Read .github/copilot-briefs/dependabot-fable-triage.md and do that.`
+Or assign Copilot on https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/26
 
 Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
