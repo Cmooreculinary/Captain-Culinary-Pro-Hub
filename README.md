@@ -115,15 +115,18 @@ README.
    npm run dev
    ```
 
-5. Open `http://localhost:5173`. The status note should read
-   **"Coach online: claude / claude-fable-5-1."**
+5. Open `http://localhost:5173`. You land on **Live Chef in Your Kitchen.**
 
-6. Click **CONNECT LOCAL COACH**, then **START THE EGG TEST**. Cap should ask
-   you to confirm the station is safe — one step at a time.
+6. Tap **Start Cooking Live**. The session connects to the local coach. Open
+   the **more** menu (three dots). The note should read
+   **"Coach online: claude / claude-fable-5-1."** when the key is set.
 
-7. **Prove interruption works:** while Cap is mid-sentence, click
-   **STOP RESPONSE**. The text should stop instantly and the transcript should
-   show "Response stopped." Then keep cooking.
+7. In that same menu, tap **Start the egg test**. Cap should ask you to
+   confirm the station is safe — one step at a time.
+
+8. **Prove interruption works:** while Cap is mid-sentence, tap the round
+   **pause** button. The Captain card should show that the response stopped.
+   Then keep cooking.
 
 To run fully offline instead, set `AGENT_PROVIDER=ollama` and `OLLAMA_MODEL`
 in `backend/.env` and restart the backend.
