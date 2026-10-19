@@ -80,7 +80,7 @@ coverage, and whether the implementation follows AGENTS.md and CLAUDE.md.
 ### Start Copilot Coding Agent (human click)
 
 Enable Copilot coding agent in repo Settings if the Copilot assignee is
-missing, then merge this memory set onto `main`. Open
+missing. Memory PR #24 is already on `main`. Open
 https://github.com/copilot/agents , pick this repo, and paste:
 
 `Read .github/copilot-briefs/dependabot-fable-triage.md and do that. Open a pull request. Then stop.`
@@ -122,10 +122,13 @@ Health/docs must still be able to report `claude / claude-fable-5-1`.
 Classify every bump: **land** / **adapt** / **hold**.
 
 - ADAPT OR HOLD: anthropic 0.x → 1.x (#17) in `backend/app/agent.py`
-- HOLD or prove `npm run build`: TypeScript 5 → 7 (#14) in the SDK
-- LAND together: **#23 before #19** (react + react-dom; #19 is red alone)
-- LAND if CI green: dnspython #20, uvicorn #18, plugin-react #16,
-  actions/setup-node #11, actions/setup-python #12
+  (CI green is not proof — Claude tests are mocked)
+- HOLD TypeScript 5 → 7 (#14) unless you want that major after re-reading
+  the SDK changelog (command-sdk CI is currently green)
+- LAND if CI green: frontend npm group #32 (react 19.3 + react-dom 19.3 +
+  plugin-react; superseded closed #16/#19/#23), pytest-cov #30,
+  gh-aw-actions #31, dnspython #20, uvicorn #18, setup-node #11,
+  setup-python #12
 
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
 

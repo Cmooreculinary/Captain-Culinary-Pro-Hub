@@ -39,11 +39,14 @@ the coaching loop, HOLD and write the delta. Never force-merge this major.
 
 Other majors:
 
-- TypeScript 5 → 7 in `command-center/sdk/typescript` — only if `npm run build` there passes
-- React type package bumps — land **#23 before #19** (never #19 alone)
+- TypeScript 5 → 7 in `command-center/sdk/typescript` (#14) — only if you
+  want that major after re-reading the SDK changelog
+- React 19.3 — land grouped frontend #32 (react + react-dom + plugin-react).
+  Closed #16 / #19 / #23 were superseded; do not reopen them.
 
-Likely-safe after CI: dnspython #20, uvicorn #18, `@vitejs/plugin-react` #16,
-actions/setup-node #11, actions/setup-python #12.
+Likely-safe after CI: frontend npm group #32, pytest-cov #30,
+gh-aw-actions/setup #31, dnspython #20, uvicorn #18, actions/setup-node #11,
+actions/setup-python #12.
 
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.
 

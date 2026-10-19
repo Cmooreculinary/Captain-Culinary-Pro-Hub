@@ -34,9 +34,11 @@ Sister repo: https://github.com/Cmooreculinary/Captain-Culinary-Kids-June
 This public Hub repo does **not** currently show GitHub’s
 `copilot-swe-agent/copilot` dynamic workflow (Kids already does). Enable
 Copilot coding agent for this repository while logged in as Chris:
-repo **Settings → Copilot → coding agent**, then merge memory PR #24 so
-`copilot-instructions.md`, the custom agent, and `copilot-setup-steps.yml`
-land on `main`.
+repo **Settings → Copilot → coding agent**.
+
+Memory PR #24 is already on `main`. Copilot loads `copilot-instructions.md`,
+the custom agent, the Dependabot brief, and `copilot-setup-steps.yml` from
+the default branch.
 
 Cursor Cloud Agent tokens (`ghs_` GitHub App installs) **cannot assign**
 Copilot. A one-shot Actions job using `GITHUB_TOKEN` also cannot: GraphQL
@@ -46,14 +48,14 @@ requests 422 (not a collaborator). The agent-tasks API needs a user token
 with a Copilot license. A GitHub Agentic Workflow (`.github/workflows/copilot-teammate.md`) runs
 **Copilot CLI** in Actions with `gpt-4.1`. A live run on 2026-09-20 did start
 and inspect Dependabot, then hit Copilot **429 Too Many Requests** after
-~700k tokens. The workflow is now inventory-only via `gh pr list`, 15-turn
-cap, dispatch from `main` after this PR merges.
+~700k tokens. The workflow is inventory-only via `gh pr list` with a turn
+cap, already on `main`. This Cursor token cannot dispatch it (403).
 
 ## How to start a Copilot run (human click)
 
 Do this while logged in as Chris:
 
-1. Merge memory PR #24 so Copilot loads instructions from `main`.
+1. Memory PR #24 is already on `main`.
 2. Open https://github.com/copilot/agents
 3. Choose **Captain-Culinary-Pro-Hub**
 4. Paste: `Read .github/copilot-briefs/dependabot-fable-triage.md and do that. Open a pull request. Then stop.`
@@ -67,9 +69,15 @@ Close stub https://github.com/Cmooreculinary/Captain-Culinary-Pro-Hub/issues/25
 
 ## Current Copilot brief (Pro Hub)
 
+Inventory refreshed after #24 merged (2026-09-20). Dependabot closed
+#16 / #19 / #23 and opened grouped #32.
+
 ADAPT OR HOLD: anthropic 0.x → 1.x (#17) in `backend/app/agent.py`.
-HOLD or prove build: TypeScript 5 → 7 (#14) in command-center SDK.
-LAND together: **#23 before #19** (react + react-dom; #19 is red alone).
-LAND if CI green: dnspython #20, uvicorn #18, @vitejs/plugin-react #16,
-actions/setup-node #11, actions/setup-python #12.
+CI green is not proof — Claude tests are mocked.
+HOLD TypeScript 5 → 7 (#14) unless you want that major after re-reading
+the SDK changelog (command-sdk CI is currently green).
+LAND if CI green (all currently CLEAN): frontend npm group #32
+(react 19.3 + react-dom 19.3 + plugin-react together), pytest-cov #30,
+gh-aw-actions/setup #31, dnspython #20, uvicorn #18, setup-node #11,
+setup-python #12.
 #2 (Cloudflare Workers) is merged on main (`wrangler.jsonc`). Do not revert it.

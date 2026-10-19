@@ -60,7 +60,7 @@ new epic.
 Copilot auto-loads `.github/copilot-instructions.md`. The assignable brief is
 `.github/copilot-briefs/dependabot-fable-triage.md`. This public Hub repo does
 not yet show Copilot cloud agent enabled (Kids already does). Cursor App
-tokens cannot assign Copilot. To start a Copilot run: enable coding agent in
-repo Settings if needed, merge the memory PR so instructions are on `main`,
-then open https://github.com/copilot/agents (logged in as the operator), pick
-this repo, and paste the brief. Or GitHub → issue #26 → assign Copilot.
+tokens cannot assign Copilot. Memory PR #24 is already on `main`. To start a
+Copilot run: enable coding agent in repo Settings if needed, then open
+https://github.com/copilot/agents (logged in as the operator), pick this
+repo, and paste the brief. Or GitHub → issue #26 → assign Copilot.
