@@ -64,15 +64,19 @@ export function useCoach() {
     const socket = new WebSocket(`${endpoint}/${sessionId}`);
     socketRef.current = socket;
 
+    const isCurrent = () => socketRef.current === socket;
     socket.onclose = () => {
+      if (!isCurrent()) return;
       setConnection("offline");
       setStreamingText("");
     };
     socket.onerror = () => {
+      if (!isCurrent()) return;
       setConnection("error");
       setRuntimeNote("The local coaching socket could not be reached.");
     };
     socket.onmessage = (message) => {
+      if (!isCurrent()) return;
       const event = JSON.parse(message.data) as ServerEvent;
       if (event.type === "ready") {
         setConnection("ready");
