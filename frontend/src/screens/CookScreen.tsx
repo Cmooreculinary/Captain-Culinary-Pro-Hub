@@ -37,8 +37,8 @@ export function CookScreen() {
   }, [running]);
 
   const step = steakSteps[stepIndex] ?? steakSteps[0];
-  const liveText = coach.streamingText || [...coach.entries].reverse().find((entry) => entry.role === "captain")?.text;
-  const systemNote = [...coach.entries].reverse().find((entry) => entry.role === "system")?.text;
+  const latestCoachLine = [...coach.entries].reverse().find((entry) => entry.role === "captain" || entry.role === "system");
+  const liveText = coach.streamingText || latestCoachLine?.text;
 
   const ingredients = useMemo(
     () =>
@@ -157,7 +157,6 @@ export function CookScreen() {
         <p className="text-lg leading-relaxed text-[#cbb290]">{step.detail}</p>
         <p className="text-xs leading-relaxed text-white/45">
           One action at a time. A camera frame is only transported. It is not a doneness, allergen, or safety check.
-          {systemNote ? ` ${systemNote}` : ""}
         </p>
         <div ref={coach.transcriptRef} className="sr-only" aria-live="polite">
           {liveText}
