@@ -1,54 +1,24 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Icon } from "../components/ui";
 import { media } from "../media";
 import { PRICE } from "../program";
-import { useSession } from "../session";
 
-const methods = [
-  { id: "card", icon: "credit_card", label: "Card" },
-  { id: "apple", icon: "phone_iphone", label: "Apple Pay" },
-  { id: "google", icon: "android", label: "Google Pay" },
-] as const;
+// Card entry happens only on the hosted checkout page (e.g. a Stripe Payment
+// Link). This app never renders card fields or sees card numbers.
+const checkoutUrl = import.meta.env.VITE_CHECKOUT_URL?.trim() || "";
 
 export function PaymentScreen() {
   const navigate = useNavigate();
-  const { markPaid } = useSession();
-  const [method, setMethod] = useState<(typeof methods)[number]["id"]>("card");
-  const [number, setNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const [note, setNote] = useState("");
 
-  const digits = number.replace(/\D/g, "");
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
-    if (method === "card") {
-      if (digits.length < 13 || digits.length > 19) {
-        setError("Enter a card number of 13 to 19 digits. It is not sent anywhere.");
-        return;
-      }
-      if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-        setError("Use an expiry like 12/28.");
-        return;
-      }
-      if (cvv.length < 3) {
-        setError("Enter the security code. It is discarded after this screen.");
-        return;
-      }
-      if (!name.trim()) {
-        setError("Add the name on the card.");
-        return;
-      }
+  const goToCheckout = () => {
+    if (!checkoutUrl.startsWith("https://")) {
+      setNote("Checkout opens at launch. Nothing has been charged.");
+      return;
     }
-    const label = method === "card" ? `Card •••• ${digits.slice(-4)}` : method === "apple" ? "Apple Pay" : "Google Pay";
-    setCvv("");
-    setNumber("");
-    markPaid(label);
-    navigate("/receipt");
+    window.location.assign(checkoutUrl);
   };
 
   return (
@@ -57,7 +27,7 @@ export function PaymentScreen() {
         <button type="button" aria-label="Back" onClick={() => navigate(-1)}>
           <Icon name="arrow_back_ios_new" />
         </button>
-        <h1 className="text-lg font-bold">Payment Method</h1>
+        <h1 className="text-lg font-bold">Checkout</h1>
       </header>
       <div className="px-5 pt-4">
         <div className="overflow-hidden rounded-3xl bg-surface-dark">
@@ -71,79 +41,20 @@ export function PaymentScreen() {
           </div>
         </div>
 
-        <h2 className="mt-6 mb-3 font-bold">Select Method</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {methods.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`rounded-2xl border px-2 py-3 text-sm font-bold ${method === item.id ? "border-primary bg-primary/10 text-primary" : "border-white/10"}`}
-              onClick={() => setMethod(item.id)}
-            >
-              <Icon name={item.icon} className="mb-1" />
-              <span className="block">{item.label}</span>
-            </button>
-          ))}
-        </div>
-
-        <form className="mt-5 flex flex-col gap-3" onSubmit={submit}>
-          {method === "card" && (
-            <>
-              <label className="text-sm font-semibold">
-                Card Number
-                <span className="mt-1 flex items-center gap-2 rounded-2xl border border-white/10 bg-[#342918] px-4">
-                  <Icon name="credit_card" className="text-text-secondary" />
-                  <input
-                    inputMode="numeric"
-                    autoComplete="cc-number"
-                    className="w-full bg-transparent py-3 outline-none"
-                    value={number}
-                    onChange={(event) => setNumber(event.target.value)}
-                  />
-                </span>
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <label className="text-sm font-semibold">
-                  Expiry Date
-                  <input
-                    placeholder="MM/YY"
-                    autoComplete="cc-exp"
-                    className="mt-1 w-full rounded-2xl border border-white/10 bg-[#342918] px-4 py-3 outline-none"
-                    value={expiry}
-                    onChange={(event) => setExpiry(event.target.value)}
-                  />
-                </label>
-                <label className="text-sm font-semibold">
-                  CVV
-                  <input
-                    inputMode="numeric"
-                    autoComplete="cc-csc"
-                    className="mt-1 w-full rounded-2xl border border-white/10 bg-[#342918] px-4 py-3 outline-none"
-                    value={cvv}
-                    onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 4))}
-                  />
-                </label>
-              </div>
-              <label className="text-sm font-semibold">
-                Name on Card
-                <input
-                  autoComplete="cc-name"
-                  className="mt-1 w-full rounded-2xl border border-white/10 bg-[#342918] px-4 py-3 outline-none"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
-              </label>
-            </>
-          )}
-          <p className="flex items-center gap-2 text-xs text-text-secondary">
-            <Icon name="lock" className="text-sm" /> Card numbers stay in this form. Only the last four digits are saved on this device. Nothing is charged.
-          </p>
-          {error && <p className="text-sm text-primary">{error}</p>}
-          <button type="submit" className="mt-2 flex items-center justify-between rounded-full bg-primary px-6 py-4 font-bold text-black">
-            <span>Confirm Payment</span>
-            <span>{PRICE}.00</span>
-          </button>
-        </form>
+        <p className="mt-6 flex items-start gap-2 text-sm text-text-secondary">
+          <Icon name="lock" className="text-base" />
+          You pay on a secure checkout page run by our payment provider. Card, Apple Pay, and Google Pay are handled
+          there. This app never sees your card number.
+        </p>
+        {note && <p className="mt-3 text-sm text-primary">{note}</p>}
+        <button
+          type="button"
+          onClick={goToCheckout}
+          className="mt-5 flex w-full items-center justify-between rounded-full bg-primary px-6 py-4 font-bold text-black"
+        >
+          <span>Continue to Secure Checkout</span>
+          <span>{PRICE}.00</span>
+        </button>
         <p className="py-6 text-center text-xs text-text-secondary">
           <Link className="underline" to="/terms">Terms of Service</Link> · <Link className="underline" to="/privacy">Refund Policy</Link>
         </p>

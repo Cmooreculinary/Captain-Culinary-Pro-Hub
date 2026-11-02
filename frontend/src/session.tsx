@@ -23,7 +23,6 @@ const emptySession: Session = {
 type SessionContextValue = {
   session: Session;
   signIn: (name: string) => void;
-  markPaid: (methodLabel: string) => void;
   signOut: () => void;
 };
 
@@ -60,26 +59,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       session,
       signIn: (name) => {
         const next = { ...session, name: name.trim() || "Chef" };
-        setSession(next);
-        writeSession(next);
-      },
-      markPaid: (methodLabel) => {
-        const stamp = new Date();
-        const next: Session = {
-          ...session,
-          name: session.name || "Chef",
-          enrolled: true,
-          paid: true,
-          methodLabel,
-          receiptId: `CC-${stamp.getTime().toString().slice(-6)}-PRO`,
-          paidAt: stamp.toLocaleString(undefined, {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "2-digit",
-          }),
-        };
         setSession(next);
         writeSession(next);
       },

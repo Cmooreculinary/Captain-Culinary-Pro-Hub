@@ -13,12 +13,12 @@ export function LegalScreen({ kind }: { kind: "terms" | "privacy" }) {
       {kind === "terms" ? (
         <div className="mt-4 space-y-3 text-sm leading-relaxed text-text-secondary">
           <p>Captain Culinary Pro Hub coaches one action at a time. You confirm the station is safe before heat or a blade.</p>
-          <p>The program price on screen is a saved enrollment on this device. It does not charge a card.</p>
+          <p>Payment happens on a secure checkout page run by our payment provider. This app never sees your card number.</p>
           <p>You can clear the saved session from the profile screen.</p>
         </div>
       ) : (
         <div className="mt-4 space-y-3 text-sm leading-relaxed text-text-secondary">
-          <p>Your chef name, enrollment flag, and payment label stay in this browser. The full card number and security code are not stored.</p>
+          <p>Your chef name and enrollment status stay in this browser. Card details are entered only on the payment provider's checkout page; this app never receives them.</p>
           <p>Camera frames go to the local coach socket for the session. They are not written to disk and they are not treated as a safety or doneness check.</p>
         </div>
       )}

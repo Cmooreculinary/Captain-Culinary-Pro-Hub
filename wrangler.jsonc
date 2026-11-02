@@ -5,8 +5,14 @@
   "observability": {
     "enabled": true
   },
+  // Build the Vite app before every deploy; serve the built output, not source.
+  "build": {
+    "command": "cd frontend && npm ci && npm run build"
+  },
   "assets": {
-    "directory": "frontend"
+    "directory": "./frontend/dist",
+    // Client-side routes (/discover, /cook, ...) fall back to index.html.
+    "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
     "nodejs_compat"
