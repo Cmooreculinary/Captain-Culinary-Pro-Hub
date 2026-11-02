@@ -12,7 +12,9 @@ type ServerEvent = {
   model?: string;
 };
 
-const endpoint = import.meta.env.VITE_COACH_WS_URL || "ws://localhost:8000/ws/coach";
+// Production builds must set VITE_COACH_WS_URL; only dev falls back to localhost.
+const endpoint: string =
+  import.meta.env.VITE_COACH_WS_URL?.trim() || (import.meta.env.DEV ? "ws://localhost:8000/ws/coach" : "");
 
 export function useCoach() {
   const [connection, setConnection] = useState<ConnectionState>("offline");
@@ -60,6 +62,11 @@ export function useCoach() {
     if (socketRef.current?.readyState === WebSocket.OPEN || socketRef.current?.readyState === WebSocket.CONNECTING) {
       return;
     }
+    if (!endpoint) {
+      setConnection("offline");
+      setRuntimeNote("Live coaching is not switched on for this site yet.");
+      return;
+    }
     setConnection("connecting");
     const socket = new WebSocket(`${endpoint}/${sessionId}`);
     socketRef.current = socket;
@@ -73,7 +80,7 @@ export function useCoach() {
     socket.onerror = () => {
       if (!isCurrent()) return;
       setConnection("error");
-      setRuntimeNote("The local coaching socket could not be reached.");
+      setRuntimeNote("The coaching service could not be reached. Try again in a moment.");
     };
     socket.onmessage = (message) => {
       if (!isCurrent()) return;

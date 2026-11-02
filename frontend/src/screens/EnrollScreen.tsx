@@ -36,7 +36,7 @@ export function EnrollScreen() {
             </div>
             <p className="text-3xl font-extrabold">{PRICE}</p>
           </div>
-          <p className="mt-1 text-sm text-text-secondary">One-time payment. Nothing is charged until you confirm on the next screen, and even then this demo keeps the card on this device.</p>
+          <p className="mt-1 text-sm text-text-secondary">One-time payment. You pay on a secure checkout page; this app never sees your card number.</p>
           <ul className="mt-4 flex flex-col gap-3">
             {perks.map(([icon, label]) => (
               <li key={label} className="flex items-center gap-3 text-sm">
@@ -56,7 +56,7 @@ export function EnrollScreen() {
         </div>
 
         <div className="mt-4 flex gap-4 text-xs text-text-secondary">
-          <span className="inline-flex items-center gap-1"><Icon name="lock" className="text-sm" /> Stays on this device</span>
+          <span className="inline-flex items-center gap-1"><Icon name="lock" className="text-sm" /> Secure checkout</span>
           <span className="inline-flex items-center gap-1"><Icon name="verified_user" className="text-sm" /> 14-day cancel window</span>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-text-secondary">
